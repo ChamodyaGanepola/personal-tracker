@@ -1,0 +1,386 @@
+
+/* Make the page full height */
+html, body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f5f6fa;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  color: #333;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the main content expand to fill space */
+body > header,
+body > section.table-section,
+body > section.summary {
+  flex-shrink: 0; /* keep header & summary natural size */
+}
+
+body > section.table-section {
+  flex-grow: 1; /* make table section expand if content is small */
+}
+
+/* Footer stays at bottom */
+footer {
+  background: #0074D9;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  margin-top: auto; /* push footer to bottom */
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0074D9;
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.navbar .logo h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar .nav-links a.logout-btn {
+  background-color: #041175;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar .nav-links a.logout-btn:hover {
+  background-color: #041175;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 25px;
+  flex-wrap: wrap;
+}
+
+
+/* Tooltip on hover */
+.card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 180px;
+  text-align: center;
+  margin: 10px;
+  color: white; /* text color white for all cards */
+  font-weight: bold;
+}
+
+.card::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%; /* above the card */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 13px;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+/* optional hover lift effect */
+.card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+
+.card.income {
+  background: #28a745; /* green */
+}
+
+.card.expense {
+  background: #dc3545; /* red */
+}
+
+.card.total {
+  background: #ff8800; /* orange */
+}
+
+
+.add-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background: #218838;
+}
+
+.table-section {
+  margin: 20px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #0074D9;
+  color: white;
+}
+
+td.income {
+  color: #28a745;
+  font-weight: 600;
+}
+
+td.expense {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.delete-btn, .edit-btn {
+  display: inline-block;      
+  font-family: inherit;       
+  font-size: 14px;            
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  border: none;              
+  cursor: pointer;
+  transition: 0.2s;
+  line-height: 1.2;           
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+.edit-btn {
+  background: #1ac434;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #17a32b;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 320px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+  from {transform: translateY(-30px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-content input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buttons button:first-child {
+  background: #0074D9;
+  color: white;
+}
+
+.buttons button:last-child {
+  background: #ccc;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #0074D9;
+  padding: 8px 12px;
+  margin: 4px;
+  border-radius: 6px;
+  border: 1px solid #0074D9;
+  transition: 0.2s;
+}
+
+.pagination a.active, .pagination a:hover {
+  background: #0074D9;
+  color: white;
+}
+
+footer {
+  background: #0074D9;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  position: relative;
+  margin-top: 30px;
+}
+.auth-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f5f6fa;
+}
+
+.auth-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.auth-container button {
+  width: 100%;
+  background: #0074D9;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth-container button:hover {
+  background: #005fa3;
+}
+
+.auth-container p {
+  margin-top: 10px;
+}
+
+.auth-container a {
+  color: #0074D9;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 14px;
+}
+
+.success {
+  color: #28a745;
+  font-size: 14px;
+}
+
+.logout-link {
+  color: white;
+  float: right;
+  margin-right: 20px;
+  text-decoration: none;
+  background: #041175;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.logout-link:hover {
+  background: #041175;
+}
